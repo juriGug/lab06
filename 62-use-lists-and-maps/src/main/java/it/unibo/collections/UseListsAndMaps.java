@@ -1,5 +1,7 @@
 package it.unibo.collections;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,21 +18,35 @@ public final class UseListsAndMaps {
      * @param s
      *            unused
      */
+    final static int ELEMENTS = 100;
     public static void main(final String... s) {
         /*
          * 1) Create a new ArrayList<Integer>, and populate it with the numbers
          * from 1000 (included) to 2000 (excluded).
          */
+        final ArrayList<Integer> list = new ArrayList<>(); 
+        for(int i = 0; i < ELEMENTS;i++){
+            list.add( Pars( Math.random() * 1000 + 1000));
+            System.out.println(list.get(i));
+        }
         /*
          * 2) Create a new LinkedList<Integer> and, in a single line of code
          * without using any looping construct (for, while), populate it with
          * the same contents of the list of point 1.
          */
+        final LinkedList<Integer> list2 = new LinkedList<>();
+        list2.addAll(list);
         /*
          * 3) Using "set" and "get" and "size" methods, swap the first and last
          * element of the first list. You can not use any "magic number".
          * (Suggestion: use a temporary variable)
          */
+        int first = list.get(list.iterator().next());
+        list.set(0, list.get(list.lastIndexOf(list)));
+        list.set(list.lastIndexOf(list), first);
+        for(int i = 0; i < ELEMENTS;i++){
+            System.out.println(list.get(i));
+        }
         /*
          * 4) Using a single for-each, print the contents of the arraylist.
          */
