@@ -98,7 +98,7 @@ public final class UseListsAndMaps {
         millis = TimeUnit.NANOSECONDS.toMillis(time);
         System.out.println((""+millis));
 
-
+        //sjjs
         /*
          * 7) Build a new Map that associates to each continent's name its
          * population:
