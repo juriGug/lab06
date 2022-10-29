@@ -84,6 +84,7 @@ public final class SocialNetworkUserImpl<U extends User> extends UserImpl implem
         var u = mapUser.get(circle);
         if(u == null){
             u = new HashSet<>();
+            mapUser.put(circle, u);
         }
         return u.add(user);
     }
@@ -96,7 +97,7 @@ public final class SocialNetworkUserImpl<U extends User> extends UserImpl implem
     @Override
     public Collection<U> getFollowedUsersInGroup(final String groupName) {
         final Set<U> gruppo = mapUser.get(groupName);
-        if(gruppo == null)
+        if(gruppo != null)
             return new ArrayList<>(gruppo);
         return Collections.emptyList();
     }
