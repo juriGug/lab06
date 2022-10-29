@@ -36,7 +36,7 @@ public final class SocialNetworkUserImpl<U extends User> extends UserImpl implem
      * In order to save the people followed by a user organized in groups, adopt
      * a generic-type Map:  think of what type of keys and values would best suit the requirements
      */
-
+    private final Map<String,Set<U>> mapUser;
     /*
      * [CONSTRUCTORS]
      *
@@ -62,12 +62,17 @@ public final class SocialNetworkUserImpl<U extends User> extends UserImpl implem
      *            application
      */
     public SocialNetworkUserImpl(final String name, final String surname, final String user, final int userAge) {
-        super(null, null, null, 0);
+        super(name, surname, user, userAge);
+        this.mapUser = new HashMap<>();
     }
 
     /*
      * 2) Define a further constructor where the age defaults to -1
      */
+    public SocialNetworkUserImpl(final String name, final String surname, final String user) {
+        super(name, surname, user );
+        this.mapUser = new HashMap<>();
+    }
 
     /*
      * [METHODS]
@@ -76,7 +81,11 @@ public final class SocialNetworkUserImpl<U extends User> extends UserImpl implem
      */
     @Override
     public boolean addFollowedUser(final String circle, final U user) {
-        return false;
+        var u = mapUser.get(circle);
+        if(u == null){
+            u = new HashSet<>();
+        }
+        return u.add(user);
     }
 
     /**
@@ -86,11 +95,18 @@ public final class SocialNetworkUserImpl<U extends User> extends UserImpl implem
      */
     @Override
     public Collection<U> getFollowedUsersInGroup(final String groupName) {
-        return null;
+        final Set<U> gruppo = mapUser.get(groupName);
+        if(gruppo == null)
+            return new ArrayList<>(gruppo);
+        return Collections.emptyList();
     }
 
     @Override
     public List<U> getFollowedUsers() {
-        return null;
+        final Set<U> u = new HashSet<>();
+        for(final var gruppo : mapUser.values()){
+            u.addAll(gruppo);
+        }
+        return new ArrayList<>(u);
     }
 }
