@@ -2,6 +2,7 @@ package it.unibo.exceptions.fakenetwork.impl;
 
 import it.unibo.exceptions.arithmetic.ArithmeticService;
 import it.unibo.exceptions.fakenetwork.api.NetworkComponent;
+import it.unibo.exceptions.fakenetwork.api.NetworkException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,12 +30,15 @@ public final class ServiceBehindUnstableNetwork implements NetworkComponent {
         /*
          * The probability should be in [0, 1[!
          */
+        if (failProbability < 0 || failProbability >= 1) {
+            throw new IllegalArgumentException("Probability must be in [0, 1[, provided: " + failProbability);
+        }
         this.failProbability = failProbability;
         randomGenerator = new Random(randomSeed);
     }
 
     /**
-     * @param failProbability the probability that a network communication fails
+     * @param failProbability the probability that a netw\ork communication fails
      */
     public ServiceBehindUnstableNetwork(final double failProbability) {
         this(failProbability, 0);
@@ -55,8 +59,8 @@ public final class ServiceBehindUnstableNetwork implements NetworkComponent {
             commandQueue.add(data);
         } else {
             final var message = data + " is not a valid keyword (allowed: " + KEYWORDS + "), nor is a number";
-            System.out.println(message);
             commandQueue.clear();
+            throw new IllegalArgumentException(message,exceptionWhenParsedAsNumber);
             /*
              * This method, in this point, should throw an IllegalStateException.
              * Its cause, however, is the previous NumberFormatException.
@@ -79,7 +83,7 @@ public final class ServiceBehindUnstableNetwork implements NetworkComponent {
 
     private void accessTheNework(final String message) throws IOException {
         if (randomGenerator.nextDouble() < failProbability) {
-            throw new IOException("Generic I/O error");
+            throw message == null ? new NetworkException() : new NetworkException(message);
         }
     }
 
