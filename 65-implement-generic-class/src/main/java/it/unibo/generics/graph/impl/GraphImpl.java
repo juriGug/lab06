@@ -41,7 +41,7 @@ public class GraphImpl<N> implements Graph<N> {
             s.add(target);
             return s;
         }
-            // crea una queue per eseguire BFS
+            // BFS
         final LinkedList<N> queue = new LinkedList<>();
  
         final Map<N,Boolean> discovered = new HashMap<>();
